@@ -36,6 +36,7 @@ export const Navbar: FunctionComponent = () => {
   return (
     <Box sx={{ flexGrow: 2 }}>
       <AppBar
+        position="static"
         sx={{
           padding: "15px",
         }}
