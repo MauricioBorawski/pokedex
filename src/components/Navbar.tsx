@@ -34,16 +34,17 @@ export const Navbar: FunctionComponent = () => {
   }));
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 2 }}>
       <AppBar
         sx={{
           padding: "15px",
-          flexDirection: "row",
         }}
       >
         <ToolBar
           sx={{
-            width: "100%",
+            width: "90%",
+            flexDirection: {xs: "column", sm: "row"},
+            alignItems: {xs: "flex-start", sm: "center"}
           }}
         >
           <Typography
@@ -52,7 +53,7 @@ export const Navbar: FunctionComponent = () => {
             sx={{
               flexGrow: 1,
               paddingLeft: "15px",
-              fontSize: { xs: "1.5rem", sm: "3rem" },
+              fontSize: { xs: "2rem", sm: "3rem" },
               width: "fit-content",
             }}
           >
