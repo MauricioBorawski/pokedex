@@ -1,9 +1,10 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState, useId } from "react";
 import axios, { AxiosResponse } from "axios";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { PokemonInfo } from "../../../types";
 import { formatPokemonId } from "../../../utils";
@@ -30,16 +31,18 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
   return (
     <Box
       sx={{
-        maxWidth: "275px",
-        display: "grid",
         margin: "15px 0",
       }}
     >
-      <Card>
+      <Card
+        sx={{
+          width: "300px",
+          height: "485px"
+        }}
+      >
         <CardMedia
           component="img"
           src={pokemonInfo?.sprites.front_default}
-          height="200"
           alt={`${name} image`}
         />
         <CardContent>
@@ -57,9 +60,17 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
             {name}
           </Typography>
 
-          {pokemonInfo?.types.map((type) => (
-            <Typography>{type.type.name}</Typography>
-          ))}
+          <Stack direction="row" gap="25px">
+            {pokemonInfo?.types.map((type, i) => (
+              <Typography
+                variant="h6"
+                sx={{ textTransform: "capitalize" }}
+                key={name + i}
+              >
+                {type.type.name}
+              </Typography>
+            ))}
+          </Stack>
         </CardContent>
       </Card>
     </Box>
