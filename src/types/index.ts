@@ -14,8 +14,13 @@ export interface PokemonGetResponse {
 
 export interface PokemonInfo {
   id: number;
+  name: string;
   sprites: PokemonSprite;
   types: Array<PokemonType>;
+  stats: Array<PokemonStats>;
+  height: number;
+  weight: number;
+  abilities: Array<PokemonAbilities>;
 }
 
 export interface PokemonSprite {
@@ -28,6 +33,19 @@ export interface PokemonSprite {
 export interface PokemonType {
   slot: number;
   type: {
+    name: string;
+  };
+}
+
+export interface PokemonStats {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+}
+
+export interface PokemonAbilities {
+  ability: {
     name: string;
   };
 }
