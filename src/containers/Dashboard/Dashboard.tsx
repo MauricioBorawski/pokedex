@@ -7,14 +7,25 @@ import { PokemonResult, PokemonGetResponse } from "../../types";
 
 export const Dashboard: FunctionComponent = () => {
   const [pokemonData, setPokemonData] = useState<PokemonResult[]>([]);
+  const [loadMoreUrl, setLoadMoreUrl] = useState("");
+
+  const additionalFetchedPokemons: Array<PokemonResult[]> = [];
 
   useEffect(() => {
     axios
       .get("https://pokeapi.co/api/v2/pokemon")
       .then((data: AxiosResponse<PokemonGetResponse>) => {
         setPokemonData([...pokemonData, ...data.data.results]);
+        setLoadMoreUrl(data.data.next);
       });
   }, []);
+
+  function loadMore(nextUrl: string) {
+    axios.get(nextUrl).then((data: AxiosResponse<PokemonGetResponse>) => {
+      setPokemonData([...pokemonData, ...data.data.results]);
+      setLoadMoreUrl(data.data.next);
+    });
+  }
 
   return (
     <>
@@ -35,9 +46,25 @@ export const Dashboard: FunctionComponent = () => {
             key={data.name}
           />
         ))}
+        {additionalFetchedPokemons.map((results) =>
+          results.map((result) => (
+            <PokemonCard
+              name={result.name}
+              pokemonInfoUrl={result.url}
+              key={result.name}
+            />
+          ))
+        )}
       </Box>
       <div style={{ textAlign: "center", margin: "15px 0px" }}>
-        <Button variant="contained">Load more</Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            loadMore(loadMoreUrl);
+          }}
+        >
+          Load more
+        </Button>
       </div>
     </>
   );
