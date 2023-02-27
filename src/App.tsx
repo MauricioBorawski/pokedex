@@ -8,7 +8,7 @@ function App() {
       element: <Dashboard />,
     },
     {
-      path: "/:pokemonname",
+      path: "/pokemon/:pokemonname",
       element: <PokemonInfo />,
     },
   ]);

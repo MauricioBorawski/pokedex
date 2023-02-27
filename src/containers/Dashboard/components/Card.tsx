@@ -1,5 +1,6 @@
 import { FunctionComponent, useEffect, useState, useId } from "react";
 import axios, { AxiosResponse } from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -22,6 +23,8 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
     undefined
   );
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     axios.get(pokemonInfoUrl).then((data: AxiosResponse<PokemonInfo>) => {
       setPokemonInfo(data.data);
@@ -37,14 +40,19 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
       <Card
         sx={{
           width: "300px",
-          height: "485px"
+          height: "485px",
         }}
       >
+        {/* <Link to={`/pokemon/${name}`}> */}
         <CardMedia
           component="img"
           src={pokemonInfo?.sprites.front_default}
           alt={`${name} image`}
+          onClick={() => {
+            navigate(`/pokemon/${name}`, { state: pokemonInfo });
+          }}
         />
+        {/* </Link> */}
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             #{formatPokemonId(pokemonInfo?.id)}
