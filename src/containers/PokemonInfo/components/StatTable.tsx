@@ -15,16 +15,16 @@ export const StatTable: FunctionComponent<{
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
-          <TableRow sx={{textTransform: "capitalize"}}>
-            {stats.map((stat) => (
-              <TableCell>{stat.stat.name}</TableCell>
+          <TableRow sx={{ textTransform: "capitalize" }}>
+            {stats.map((stat, i) => (
+              <TableCell key={i}>{stat.stat.name}</TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            {stats.map((stat) => (
-              <TableCell>{stat.base_stat}</TableCell>
+            {stats.map((stat, i) => (
+              <TableCell key={stat.stat.name + i}>{stat.base_stat}</TableCell>
             ))}
           </TableRow>
         </TableBody>

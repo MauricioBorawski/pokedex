@@ -67,13 +67,13 @@ export const PokemonInfo: FunctionComponent = () => {
             <div>
               <Typography variant="h5">Types</Typography>
               {state.types.map((type) => (
-                <Typography>{type.type.name}</Typography>
+                <Typography key={type.type.name}>{type.type.name}</Typography>
               ))}
             </div>
             <div>
               <Typography variant="h5">Abilities</Typography>
               {state.abilities.map((ability) => (
-                <Typography>{ability.ability.name}</Typography>
+                <Typography key={ability.ability.name}>{ability.ability.name}</Typography>
               ))}
             </div>
           </Container>

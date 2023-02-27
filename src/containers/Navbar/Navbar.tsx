@@ -59,7 +59,9 @@ export const Navbar: FunctionComponent = () => {
               width: "fit-content",
             }}
           >
-            <Link href="/" underline="none" color={"text.primary"}>Pokedex</Link>
+            <Link href="/" underline="none" color={"text.primary"}>
+              Pokedex
+            </Link>
           </Typography>
 
           <Search>
