@@ -25,6 +25,7 @@ export const Dashboard: FunctionComponent = () => {
             "repeat(auto-fit, minmax(max(300px, 100%/4), 1fr))",
           gridTemplateRows: "auto 1fr",
           placeItems: "center",
+          gap: "5px",
         }}
       >
         {pokemonData.map((data) => (
@@ -34,8 +35,10 @@ export const Dashboard: FunctionComponent = () => {
             key={data.name}
           />
         ))}
-        <Button variant="contained">Load more</Button>
       </Box>
+      <div style={{ textAlign: "center", margin: "15px 0px" }}>
+        <Button variant="contained">Load more</Button>
+      </div>
     </>
   );
 };

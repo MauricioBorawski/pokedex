@@ -1,9 +1,10 @@
 import { FunctionComponent } from "react";
-import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import InputBase from "@mui/material/InputBase";
+import Link from "@mui/material/Link";
 import ToolBar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
 
 export const Navbar: FunctionComponent = () => {
@@ -44,8 +45,8 @@ export const Navbar: FunctionComponent = () => {
         <ToolBar
           sx={{
             width: "90%",
-            flexDirection: {xs: "column", sm: "row"},
-            alignItems: {xs: "flex-start", sm: "center"}
+            flexDirection: { xs: "column", sm: "row" },
+            alignItems: { xs: "flex-start", sm: "center" },
           }}
         >
           <Typography
@@ -58,7 +59,7 @@ export const Navbar: FunctionComponent = () => {
               width: "fit-content",
             }}
           >
-            Pokedex
+            <Link href="/" underline="none" color={"text.primary"}>Pokedex</Link>
           </Typography>
 
           <Search>
