@@ -1,16 +1,48 @@
-import { FunctionComponent } from "react";
-import { useLocation } from "react-router-dom";
+import { FunctionComponent, useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import { styled } from "@mui/system";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { StatTable } from "./components";
 import { PokemonInfo as PokemonData } from "../../types";
-import { formatPokemonId } from "../../utils";
+import { defaultPokemonInfo, formatPokemonId } from "../../utils";
+import axios, { AxiosResponse } from "axios";
 
 export const PokemonInfo: FunctionComponent = () => {
+  const { pokemonname } = useParams();
   const { state }: { state: PokemonData } = useLocation();
+  const [pokemonData, setPokemonData] =
+    useState<PokemonData>(defaultPokemonInfo);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoaading, setIsLoading] = useState<boolean>(true);
 
-  console.log(state);
+  useEffect(() => {
+    if (!state) {
+      const fetchData = async () =>
+        await axios
+          .get(`https://pokeapi.co/api/v2/pokemon/${pokemonname}`)
+          .then((data) => {
+            setIsLoading(true);
+            return data;
+          })
+          .then((data: AxiosResponse<PokemonData>) => {
+            setPokemonData(data.data);
+          })
+          .catch(() => {
+            setIsError(true);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+
+      fetchData();
+    } else {
+      setPokemonData(state);
+    }
+  }, [state, pokemonname]);
+
+  if (isLoaading && !state) return <h1>Loading</h1>;
+  if (isError) return <h1>Error</h1>;
 
   return (
     <Box
@@ -29,7 +61,7 @@ export const PokemonInfo: FunctionComponent = () => {
             textTransform: "capitalize",
           }}
         >
-          {state.name}
+          {pokemonData.name}
         </Typography>
         <Typography
           align="center"
@@ -37,43 +69,45 @@ export const PokemonInfo: FunctionComponent = () => {
           color="text.secondary"
           gutterBottom
         >
-          #{formatPokemonId(state.id)}
+          #{formatPokemonId(pokemonData.id)}
         </Typography>
       </div>
       <Grid>
         <div>
           <img
-            src={state.sprites.back_default}
-            alt={`${state.name} back`}
+            src={pokemonData.sprites.back_default}
+            alt={`${pokemonData.name} back`}
             style={{ width: "300px", height: "300px" }}
           />
           <img
-            src={state.sprites.front_default}
-            alt={`${state.name} front`}
+            src={pokemonData.sprites.front_default}
+            alt={`${pokemonData.name} front`}
             style={{ width: "300px", height: "300px" }}
           />
         </div>
         <div style={{ maxWidth: "90%" }}>
-          <StatTable stats={state.stats} />
+          <StatTable stats={pokemonData.stats} />
           <Container>
             <div>
               <Typography variant="h5">Height</Typography>
-              <Typography>{state.height / 10}m</Typography>
+              <Typography>{pokemonData.height / 10}m</Typography>
             </div>
             <div>
               <Typography variant="h5">Weight</Typography>
-              <Typography>{state.weight / 10}kg</Typography>
+              <Typography>{pokemonData.weight / 10}kg</Typography>
             </div>
             <div>
               <Typography variant="h5">Types</Typography>
-              {state.types.map((type) => (
+              {pokemonData.types.map((type) => (
                 <Typography key={type.type.name}>{type.type.name}</Typography>
               ))}
             </div>
             <div>
               <Typography variant="h5">Abilities</Typography>
-              {state.abilities.map((ability) => (
-                <Typography key={ability.ability.name}>{ability.ability.name}</Typography>
+              {pokemonData.abilities.map((ability) => (
+                <Typography key={ability.ability.name}>
+                  {ability.ability.name}
+                </Typography>
               ))}
             </div>
           </Container>

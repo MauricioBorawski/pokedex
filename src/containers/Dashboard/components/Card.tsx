@@ -51,6 +51,12 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
           onClick={() => {
             navigate(`/pokemon/${name}`, { state: pokemonInfo });
           }}
+          sx={{
+            cursor: "pointer",
+            ":hover": {
+              filter: "brightness(1.1)",
+            },
+          }}
         />
         {/* </Link> */}
         <CardContent>

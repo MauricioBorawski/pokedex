@@ -1,21 +1,14 @@
 import { Dashboard, Navbar, PokemonInfo } from "./containers";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Dashboard />,
-    },
-    {
-      path: "/pokemon/:pokemonname",
-      element: <PokemonInfo />,
-    },
-  ]);
   return (
     <div className="App">
       <Navbar />
-      <RouterProvider router={router} />
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/pokemon/:pokemonname" element={<PokemonInfo />} />
+      </Routes>
     </div>
   );
 }
