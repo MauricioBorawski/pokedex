@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { styled, Stack } from "@mui/system";
+import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { StatTable } from "./components";
@@ -8,6 +9,7 @@ import { PokemonInfo as PokemonData } from "../../types";
 import { defaultPokemonInfo, formatPokemonId } from "../../utils";
 import axios, { AxiosResponse } from "axios";
 import { typeColors } from "../../utils/typecolors";
+import { ErrorPage } from "../Error";
 
 export const PokemonInfo: FunctionComponent = () => {
   const { pokemonname } = useParams();
@@ -15,7 +17,7 @@ export const PokemonInfo: FunctionComponent = () => {
   const [pokemonData, setPokemonData] =
     useState<PokemonData>(defaultPokemonInfo);
   const [isError, setIsError] = useState<boolean>(false);
-  const [isLoaading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!state) {
@@ -42,8 +44,8 @@ export const PokemonInfo: FunctionComponent = () => {
     }
   }, [state, pokemonname]);
 
-  if (isLoaading && !state) return <h1>Loading</h1>;
-  if (isError) return <h1>Error</h1>;
+  if (isLoading && !state) return <CircularProgress aria-busy={isLoading} />;
+  if (isError) return <ErrorPage />;
 
   return (
     <Box
