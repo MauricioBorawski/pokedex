@@ -1,12 +1,13 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { styled } from "@mui/system";
+import { styled, Stack } from "@mui/system";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { StatTable } from "./components";
 import { PokemonInfo as PokemonData } from "../../types";
 import { defaultPokemonInfo, formatPokemonId } from "../../utils";
 import axios, { AxiosResponse } from "axios";
+import { typeColors } from "../../utils/typecolors";
 
 export const PokemonInfo: FunctionComponent = () => {
   const { pokemonname } = useParams();
@@ -75,13 +76,13 @@ export const PokemonInfo: FunctionComponent = () => {
       <Grid>
         <div>
           <img
-            src={pokemonData.sprites.back_default}
-            alt={`${pokemonData.name} back`}
+            src={pokemonData.sprites.front_default}
+            alt={`${pokemonData.name} front`}
             style={{ width: "300px", height: "300px" }}
           />
           <img
-            src={pokemonData.sprites.front_default}
-            alt={`${pokemonData.name} front`}
+            src={pokemonData.sprites.back_default}
+            alt={`${pokemonData.name} back`}
             style={{ width: "300px", height: "300px" }}
           />
         </div>
@@ -98,9 +99,28 @@ export const PokemonInfo: FunctionComponent = () => {
             </div>
             <div>
               <Typography variant="h5">Types</Typography>
-              {pokemonData.types.map((type) => (
-                <Typography key={type.type.name}>{type.type.name}</Typography>
-              ))}
+              <Stack
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                }}
+              >
+                {pokemonData.types.map((type) => (
+                  <Typography
+                    sx={{
+                      textTransform: "capitalize",
+                      background: typeColors[type.type.name],
+                      padding: "4px 15px",
+                      borderRadius: "10px",
+                      width: "3.5rem",
+                    }}
+                    key={type.type.name}
+                  >
+                    {type.type.name}
+                  </Typography>
+                ))}
+              </Stack>
             </div>
             <div>
               <Typography variant="h5">Abilities</Typography>

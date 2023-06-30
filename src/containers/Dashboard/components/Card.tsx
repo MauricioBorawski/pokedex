@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState, useId } from "react";
 import axios, { AxiosResponse } from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -9,6 +9,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { PokemonInfo } from "../../../types";
 import { formatPokemonId } from "../../../utils";
+import { typeColors } from "../../../utils/typecolors";
 
 export interface PokemonCardProps {
   name: string;
@@ -58,7 +59,6 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
             },
           }}
         />
-        {/* </Link> */}
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             #{formatPokemonId(pokemonInfo?.id)}
@@ -78,7 +78,12 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
             {pokemonInfo?.types.map((type, i) => (
               <Typography
                 variant="h6"
-                sx={{ textTransform: "capitalize" }}
+                sx={{
+                  textTransform: "capitalize",
+                  background: typeColors[type.type.name],
+                  padding: "4px 15px",
+                  borderRadius: "10px"
+                }}
                 key={name + i}
               >
                 {type.type.name}
