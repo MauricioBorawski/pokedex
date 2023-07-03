@@ -1,1 +1,1 @@
-export { createPokemonsGetRequest } from "./createGetRequest";
+export { createGetRequest } from "./createGetRequest";

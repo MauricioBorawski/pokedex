@@ -1,8 +1,9 @@
 import { FunctionComponent, ReactNode } from "react";
 import { usePokemonContext, PokemonContext } from "@/context";
 import { Box, Button } from "@mui/material";
-import { createPokemonsGetRequest } from "@/methods";
+import { createGetRequest } from "@/methods";
 import { PokemonCard } from "./components/Card";
+import { PokemonGetResponse } from "@/types";
 
 export const Dashboard: FunctionComponent = () => {
   const { pokemonData, setPokemonData, loadMoreUrl, setLoadMoreUrl } =
@@ -32,7 +33,7 @@ export const Dashboard: FunctionComponent = () => {
         <Button
           variant="contained"
           onClick={() => {
-            createPokemonsGetRequest(loadMoreUrl, (data) => {
+            createGetRequest<PokemonGetResponse>(loadMoreUrl, (data) => {
               setPokemonData([...pokemonData, ...data.data.results]);
               if (data.data.next) setLoadMoreUrl(data.data.next);
             });

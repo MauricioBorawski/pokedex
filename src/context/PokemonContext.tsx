@@ -5,8 +5,8 @@ import {
   useEffect,
   useContext,
 } from "react";
-import { PokemonResult } from "../types";
-import { createPokemonsGetRequest } from "../methods";
+import { PokemonGetResponse, PokemonResult } from "../types";
+import { createGetRequest } from "../methods";
 
 interface PokemonContextReturnType {
   pokemonData: PokemonResult[];
@@ -27,14 +27,13 @@ export const PokemonContextProvider = ({
   const [pokemonData, setPokemonData] = useState<PokemonResult[]>([]);
   const [loadMoreUrl, setLoadMoreUrl] = useState("");
 
+  const url = "https://pokeapi.co/api/v2/pokemon?limit=151";
+
   useEffect(() => {
-    createPokemonsGetRequest(
-      "https://pokeapi.co/api/v2/pokemon?limit=151",
-      (data) => {
-        setPokemonData([...pokemonData, ...data.data.results]);
-        if (data.data.next) setLoadMoreUrl(data.data.next);
-      }
-    );
+    createGetRequest<PokemonGetResponse>(url, (data) => {
+      setPokemonData([...pokemonData, ...data.data.results]);
+      if (data.data.next) setLoadMoreUrl(data.data.next);
+    });
   }, []);
 
   return (

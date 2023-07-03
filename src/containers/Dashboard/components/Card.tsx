@@ -7,9 +7,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { PokemonInfo } from "../../../types";
-import { formatPokemonId } from "../../../utils";
-import { typeColors } from "../../../utils/typecolors";
+import { PokemonInfo } from "@/types";
+import { formatPokemonId } from "@/utils";
+import { typeColors } from "@/utils/typecolors";
+import { createGetRequest } from "@/methods";
 
 export interface PokemonCardProps {
   name: string;
@@ -27,7 +28,7 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(pokemonInfoUrl).then((data: AxiosResponse<PokemonInfo>) => {
+    createGetRequest<PokemonInfo>(pokemonInfoUrl, (data) => {
       setPokemonInfo(data.data);
     });
   }, []);
@@ -44,7 +45,6 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
           height: "485px",
         }}
       >
-        {/* <Link to={`/pokemon/${name}`}> */}
         <CardMedia
           component="img"
           src={pokemonInfo?.sprites.front_default}
@@ -73,7 +73,6 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
           >
             {name}
           </Typography>
-
           <Stack direction="row" gap="25px">
             {pokemonInfo?.types.map((type, i) => (
               <Typography
@@ -82,7 +81,7 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
                   textTransform: "capitalize",
                   background: typeColors[type.type.name],
                   padding: "4px 15px",
-                  borderRadius: "10px"
+                  borderRadius: "10px",
                 }}
                 key={name + i}
               >
