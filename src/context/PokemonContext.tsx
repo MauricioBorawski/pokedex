@@ -1,4 +1,3 @@
-import axios, { AxiosResponse } from "axios";
 import {
   createContext,
   useState,
@@ -6,7 +5,8 @@ import {
   useEffect,
   useContext,
 } from "react";
-import { PokemonGetResponse, PokemonResult } from "../types";
+import { PokemonResult } from "../types";
+import { createPokemonsGetRequest } from "../methods";
 
 interface PokemonContextReturnType {
   pokemonData: PokemonResult[];
@@ -28,12 +28,13 @@ export const PokemonContextProvider = ({
   const [loadMoreUrl, setLoadMoreUrl] = useState("");
 
   useEffect(() => {
-    axios
-      .get("https://pokeapi.co/api/v2/pokemon?limit=150")
-      .then((data: AxiosResponse<PokemonGetResponse>) => {
+    createPokemonsGetRequest(
+      "https://pokeapi.co/api/v2/pokemon?limit=151",
+      (data) => {
         setPokemonData([...pokemonData, ...data.data.results]);
-        setLoadMoreUrl(data.data.next);
-      });
+        if (data.data.next) setLoadMoreUrl(data.data.next);
+      }
+    );
   }, []);
 
   return (
