@@ -1,21 +1,12 @@
-import { FunctionComponent, useState } from "react";
-import { usePokemonContext, PokemonContext } from "../../context";
-import axios, { AxiosResponse } from "axios";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import { FunctionComponent, ReactNode } from "react";
+import { usePokemonContext, PokemonContext } from "@/context";
+import { Box, Button } from "@mui/material";
+import { createPokemonsGetRequest } from "@/methods";
 import { PokemonCard } from "./components/Card";
-import { PokemonResult, PokemonGetResponse } from "../../types";
 
 export const Dashboard: FunctionComponent = () => {
   const { pokemonData, setPokemonData, loadMoreUrl, setLoadMoreUrl } =
     usePokemonContext(PokemonContext);
-
-  function loadMore(nextUrl: string) {
-    axios.get(nextUrl).then((data: AxiosResponse<PokemonGetResponse>) => {
-      setPokemonData([...pokemonData, ...data.data.results]);
-      setLoadMoreUrl(data.data.next);
-    });
-  }
 
   return (
     <>
@@ -37,16 +28,23 @@ export const Dashboard: FunctionComponent = () => {
           />
         ))}
       </Box>
-      <div style={{ textAlign: "center", margin: "15px 0px" }}>
+      <ButtonContainer>
         <Button
           variant="contained"
           onClick={() => {
-            loadMore(loadMoreUrl);
+            createPokemonsGetRequest(loadMoreUrl, (data) => {
+              setPokemonData([...pokemonData, ...data.data.results]);
+              if (data.data.next) setLoadMoreUrl(data.data.next);
+            });
           }}
         >
           Load more
         </Button>
-      </div>
+      </ButtonContainer>
     </>
   );
 };
+
+const ButtonContainer: FunctionComponent<{ children: ReactNode }> = ({
+  children,
+}) => <Box sx={{ textAlign: "center", margin: "15px 0px" }}>{children}</Box>;
