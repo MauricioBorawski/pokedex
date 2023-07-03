@@ -29,7 +29,7 @@ export const PokemonContextProvider = ({
 
   useEffect(() => {
     axios
-      .get("https://pokeapi.co/api/v2/pokemon")
+      .get("https://pokeapi.co/api/v2/pokemon?limit=150")
       .then((data: AxiosResponse<PokemonGetResponse>) => {
         setPokemonData([...pokemonData, ...data.data.results]);
         setLoadMoreUrl(data.data.next);
