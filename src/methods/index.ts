@@ -1,0 +1,1 @@
+export { createPokemonsGetRequest } from "./createGetRequest";

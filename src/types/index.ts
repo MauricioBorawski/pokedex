@@ -7,7 +7,7 @@ export interface PokemonResult {
 
 export interface PokemonGetResponse {
   count: number;
-  next: string;
+  next: null | string;
   previous: null | string;
   results: Array<PokemonResult>;
 }
