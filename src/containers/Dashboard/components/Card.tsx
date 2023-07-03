@@ -1,5 +1,4 @@
-import { FunctionComponent, useEffect, useState, useId } from "react";
-import axios, { AxiosResponse } from "axios";
+import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
