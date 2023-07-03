@@ -35,6 +35,7 @@ export const DisplayOptions: FunctionComponent<DisplayOptionProps> = ({
     setPokemonDataCopy(
       pokemonData.filter((data) => {
         const regex = new RegExp(`${userInputValue}`, "gi");
+
         return regex.test(data.name);
       })
     );
@@ -69,21 +70,21 @@ export const DisplayOptions: FunctionComponent<DisplayOptionProps> = ({
             </ListItemText>
           </ListItem>
         ))}
-        <ListItem
-          sx={{
-            cursor: "pointer",
-            ":hover": {
-              backgroundColor: "ActiveBorder",
-            },
-          }}
-          onClick={() => {
-            handleOnSelectItem(userInputValue);
-          }}
-        >
-          {pokemonDataCopy.length < 1 && (
+        {pokemonDataCopy.length < 1 && (
+          <ListItem
+            sx={{
+              cursor: "pointer",
+              ":hover": {
+                backgroundColor: "ActiveBorder",
+              },
+            }}
+            onClick={() => {
+              handleOnSelectItem(userInputValue);
+            }}
+          >
             <ListItemText>{userInputValue}</ListItemText>
-          )}
-        </ListItem>
+          </ListItem>
+        )}
       </List>
     </Box>
   );
