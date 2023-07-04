@@ -33,9 +33,12 @@ export const Dashboard: FunctionComponent = () => {
         <Button
           variant="contained"
           onClick={() => {
-            createGetRequest<PokemonGetResponse>(loadMoreUrl, (data) => {
-              setPokemonData([...pokemonData, ...data.data.results]);
-              if (data.data.next) setLoadMoreUrl(data.data.next);
+            createGetRequest<PokemonGetResponse>({
+              url: loadMoreUrl,
+              onSuccess: (data) => {
+                setPokemonData([...pokemonData, ...data.data.results]);
+                if (data.data.next) setLoadMoreUrl(data.data.next);
+              },
             });
           }}
         >

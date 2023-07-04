@@ -30,9 +30,12 @@ export const PokemonContextProvider = ({
   const url = "https://pokeapi.co/api/v2/pokemon?limit=151";
 
   useEffect(() => {
-    createGetRequest<PokemonGetResponse>(url, (data) => {
-      setPokemonData([...pokemonData, ...data.data.results]);
-      if (data.data.next) setLoadMoreUrl(data.data.next);
+    createGetRequest<PokemonGetResponse>({
+      url,
+      onSuccess: (data) => {
+        setPokemonData([...pokemonData, ...data.data.results]);
+        if (data.data.next) setLoadMoreUrl(data.data.next);
+      },
     });
   }, []);
 

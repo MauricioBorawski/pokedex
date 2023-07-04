@@ -15,13 +15,19 @@ import axios, { AxiosResponse } from "axios";
  * error during the HTTP GET request. It is optional and can be omitted if you don't need to handle
  * errors specifically.
  */
-export const createGetRequest = <T>(
-  url: string,
-  onSuccess: (data: AxiosResponse<T>) => void,
-  onLoading?: () => void,
-  onFinishLoading?: () => void,
-  onError?: () => void
-) => {
+export const createGetRequest = <T>({
+  url,
+  onSuccess,
+  onLoading,
+  onFinishLoading,
+  onError,
+}: {
+  url: string;
+  onSuccess: (data: AxiosResponse<T>) => void;
+  onLoading?: () => void;
+  onFinishLoading?: () => void;
+  onError?: () => void;
+}) => {
   axios
     .get(url)
     .then((data: AxiosResponse<T>) => {

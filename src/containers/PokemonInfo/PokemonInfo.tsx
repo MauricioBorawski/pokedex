@@ -22,21 +22,21 @@ export const PokemonInfo: FunctionComponent = () => {
 
   useEffect(() => {
     if (!state) {
-      createGetRequest<PokemonData>(
-        url,
-        (data) => {
+      createGetRequest<PokemonData>({
+        url: url,
+        onSuccess: (data) => {
           setPokemonData(data.data);
         },
-        () => {
+        onLoading: () => {
           setIsLoading(true);
         },
-        () => {
+        onFinishLoading: () => {
           setIsLoading(false);
         },
-        () => {
+        onError: () => {
           setIsError(true);
-        }
-      );
+        },
+      });
     } else {
       setPokemonData(state);
     }

@@ -27,8 +27,11 @@ export const PokemonCard: FunctionComponent<PokemonCardProps> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    createGetRequest<PokemonInfo>(pokemonInfoUrl, (data) => {
-      setPokemonInfo(data.data);
+    createGetRequest<PokemonInfo>({
+      url: pokemonInfoUrl,
+      onSuccess: (data) => {
+        setPokemonInfo(data.data);
+      },
     });
   }, []);
 
