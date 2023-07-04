@@ -14,8 +14,8 @@ export const ErrorPage: FunctionComponent = () => {
     >
       <h1>No pokemon was found.</h1>
       <Typography>
-        Pokemon <strong>{pokemonname}</strong> doesn't exist, pleasecheck that the name or
-        numbers are correct.
+        Pokemon <strong>{pokemonname}</strong> doesn't exist, pleasecheck that
+        the name or numbers are correct.
       </Typography>
     </Container>
   );

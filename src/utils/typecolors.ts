@@ -16,5 +16,5 @@ export const typeColors: Record<string, string> = {
   steel: "#9EB7B8",
   ice: "#51C4E7",
   rock: "linear-gradient(180deg, #f7de3f 50%, #ab9842 50%)",
-  bug: "#729F3F"
+  bug: "#729F3F",
 } as const;
