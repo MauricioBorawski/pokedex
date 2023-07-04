@@ -1,44 +1,42 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, ReactNode, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { styled, Stack } from "@mui/system";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { createGetRequest } from "@/methods";
+import { defaultPokemonInfo, formatPokemonId } from "@/utils";
+import { typeColors } from "@/utils/typecolors";
 import { StatTable } from "./components";
-import { PokemonInfo as PokemonData } from "../../types";
-import { defaultPokemonInfo, formatPokemonId } from "../../utils";
-import axios, { AxiosResponse } from "axios";
-import { typeColors } from "../../utils/typecolors";
 import { ErrorPage } from "../Error";
+import { PokemonInfo as PokemonData } from "@/types";
 
 export const PokemonInfo: FunctionComponent = () => {
   const { pokemonname } = useParams();
   const { state }: { state: PokemonData } = useLocation();
+
   const [pokemonData, setPokemonData] =
     useState<PokemonData>(defaultPokemonInfo);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const url = `https://pokeapi.co/api/v2/pokemon/${pokemonname}`;
+
   useEffect(() => {
     if (!state) {
-      const fetchData = async () =>
-        await axios
-          .get(`https://pokeapi.co/api/v2/pokemon/${pokemonname}`)
-          .then((data) => {
-            setIsLoading(true);
-            return data;
-          })
-          .then((data: AxiosResponse<PokemonData>) => {
-            setPokemonData(data.data);
-          })
-          .catch(() => {
-            setIsError(true);
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
-
-      fetchData();
+      createGetRequest<PokemonData>(
+        url,
+        (data) => {
+          setPokemonData(data.data);
+        },
+        () => {
+          setIsLoading(true);
+        },
+        () => {
+          setIsLoading(false);
+        },
+        () => {
+          setIsError(true);
+        }
+      );
     } else {
       setPokemonData(state);
     }
@@ -58,22 +56,8 @@ export const PokemonInfo: FunctionComponent = () => {
       }}
     >
       <div>
-        <Typography
-          variant="h3"
-          sx={{
-            textTransform: "capitalize",
-          }}
-        >
-          {pokemonData.name}
-        </Typography>
-        <Typography
-          align="center"
-          variant="h6"
-          color="text.secondary"
-          gutterBottom
-        >
-          #{formatPokemonId(pokemonData.id)}
-        </Typography>
+        <PokemonName>{pokemonData.name}</PokemonName>
+        <PokemonId>#{formatPokemonId(pokemonData.id)}</PokemonId>
       </div>
       <Grid>
         <div>
@@ -109,18 +93,9 @@ export const PokemonInfo: FunctionComponent = () => {
                 }}
               >
                 {pokemonData.types.map((type) => (
-                  <Typography
-                    sx={{
-                      textTransform: "capitalize",
-                      background: typeColors[type.type.name],
-                      padding: "4px 15px",
-                      borderRadius: "10px",
-                      width: "3.5rem",
-                    }}
-                    key={type.type.name}
-                  >
+                  <PokemonType name={type.type.name}>
                     {type.type.name}
-                  </Typography>
+                  </PokemonType>
                 ))}
               </Stack>
             </div>
@@ -138,6 +113,23 @@ export const PokemonInfo: FunctionComponent = () => {
     </Box>
   );
 };
+
+const PokemonName = ({ children }: { children: ReactNode }) => (
+  <Typography
+    variant="h3"
+    sx={{
+      textTransform: "capitalize",
+    }}
+  >
+    {children}
+  </Typography>
+);
+
+const PokemonId = ({ children }: { children: ReactNode }) => (
+  <Typography align="center" variant="h6" color="text.secondary" gutterBottom>
+    {children}
+  </Typography>
+);
 
 const Container = styled("div")({
   maxWidth: "575px",
@@ -159,3 +151,24 @@ const Grid = styled("div")({
   overflowX: "hidden",
   gap: "25px",
 });
+
+const PokemonType = ({
+  children,
+  name,
+}: {
+  children: ReactNode;
+  name: string;
+}) => (
+  <Typography
+    sx={{
+      textTransform: "capitalize",
+      background: typeColors[name],
+      padding: "4px 15px",
+      borderRadius: "10px",
+      width: "3.5rem",
+    }}
+    key={name}
+  >
+    {children}
+  </Typography>
+);

@@ -1,13 +1,10 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, ReactNode, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import InputBase from "@mui/material/InputBase";
 import ToolBar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import { AppBar, Box, InputBase, Typography } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 import { DisplayOptions } from "./components/DisplayOptions";
-import { useDebounce } from "../../hooks";
+import { useDebounce } from "@/hooks";
 
 export const Navbar: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -31,7 +28,7 @@ export const Navbar: FunctionComponent = () => {
   }, [userInputValue]);
 
   return (
-    <Box sx={{ flexGrow: 2 }}>
+    <Container>
       <AppBar
         position="static"
         sx={{
@@ -45,16 +42,7 @@ export const Navbar: FunctionComponent = () => {
             alignItems: { xs: "flex-start", sm: "center" },
           }}
         >
-          <Typography
-            variant="h3"
-            noWrap
-            sx={{
-              flexGrow: 1,
-              paddingLeft: "15px",
-              fontSize: { xs: "2rem", sm: "3rem" },
-              width: "fit-content",
-            }}
-          >
+          <Title>
             <Link
               to={"/"}
               style={{
@@ -64,8 +52,7 @@ export const Navbar: FunctionComponent = () => {
             >
               Pokédex
             </Link>
-          </Typography>
-
+          </Title>
           <Search>
             <StyledInputBase
               placeholder="Search…"
@@ -89,9 +76,28 @@ export const Navbar: FunctionComponent = () => {
           </Search>
         </ToolBar>
       </AppBar>
-    </Box>
+    </Container>
   );
 };
+
+const Container = ({ children }: { children: ReactNode }) => (
+  <Box sx={{ flexGrow: 2 }}>{children}</Box>
+);
+
+const Title = ({ children }: { children: ReactNode }) => (
+  <Typography
+    variant="h3"
+    noWrap
+    sx={{
+      flexGrow: 1,
+      paddingLeft: "15px",
+      fontSize: { xs: "2rem", sm: "3rem" },
+      width: "fit-content",
+    }}
+  >
+    {children}
+  </Typography>
+);
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
