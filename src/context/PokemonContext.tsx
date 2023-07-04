@@ -27,16 +27,18 @@ export const PokemonContextProvider = ({
   const [pokemonData, setPokemonData] = useState<PokemonResult[]>([]);
   const [loadMoreUrl, setLoadMoreUrl] = useState("");
 
-  const url = "https://pokeapi.co/api/v2/pokemon?limit=151";
+  const url = "https://pokeapi.co/api/v2/pokemon?limit=21";
 
   useEffect(() => {
-    createGetRequest<PokemonGetResponse>({
-      url,
-      onSuccess: (data) => {
-        setPokemonData([...pokemonData, ...data.data.results]);
-        if (data.data.next) setLoadMoreUrl(data.data.next);
-      },
-    });
+    if (pokemonData.length === 0) {
+      createGetRequest<PokemonGetResponse>({
+        url,
+        onSuccess: (data) => {
+          setPokemonData([...pokemonData, ...data.data.results]);
+          if (data.data.next) setLoadMoreUrl(data.data.next);
+        },
+      });
+    }
   }, []);
 
   return (

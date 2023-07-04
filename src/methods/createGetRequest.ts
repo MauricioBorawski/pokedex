@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 
 /**
  * The `createGetRequest` function is a that sends a GET request to a specified URL
@@ -26,7 +26,7 @@ export const createGetRequest = <T>({
   onSuccess: (data: AxiosResponse<T>) => void;
   onLoading?: () => void;
   onFinishLoading?: () => void;
-  onError?: () => void;
+  onError?: (error: AxiosError) => void;
 }) => {
   axios
     .get(url)
@@ -37,8 +37,8 @@ export const createGetRequest = <T>({
     .then((data) => {
       onSuccess(data);
     })
-    .catch(() => {
-      if (onError) onError();
+    .catch((error: AxiosError) => {
+      if (onError) onError(error);
     })
     .finally(() => {
       if (onFinishLoading) onFinishLoading();
