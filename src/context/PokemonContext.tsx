@@ -29,6 +29,8 @@ export const PokemonContextProvider = ({
 
   const url = "https://pokeapi.co/api/v2/pokemon?limit=21";
 
+  console.log(pokemonData);
+
   useEffect(() => {
     if (pokemonData.length === 0) {
       createGetRequest<PokemonGetResponse>({

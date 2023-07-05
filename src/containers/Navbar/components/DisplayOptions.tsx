@@ -8,19 +8,19 @@ import { PokemonContext, usePokemonContext } from "../../../context";
 import { PokemonResult } from "../../../types";
 
 export interface DisplayOptionProps {
+  pokemonData: PokemonResult[];
   show: boolean;
   userInputValue: string;
   setShow: (value: boolean) => void;
 }
 
 export const DisplayOptions: FunctionComponent<DisplayOptionProps> = ({
+  pokemonData,
   show,
   setShow,
   userInputValue,
 }) => {
   const navigate = useNavigate();
-
-  const { pokemonData } = usePokemonContext(PokemonContext);
 
   const [pokemonDataCopy, setPokemonDataCopy] =
     useState<PokemonResult[]>(pokemonData);

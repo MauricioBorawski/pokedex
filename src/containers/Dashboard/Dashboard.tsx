@@ -3,10 +3,16 @@ import { usePokemonContext, PokemonContext } from "@/context";
 import { Box, Button } from "@mui/material";
 import { createGetRequest } from "@/methods";
 import { PokemonCard } from "./components/Card";
-import { PokemonGetResponse } from "@/types";
+import { PokemonGetResponse, PokemonResult } from "@/types";
 
-export const Dashboard: FunctionComponent = () => {
-  const { pokemonData, setPokemonData, loadMoreUrl, setLoadMoreUrl } =
+interface DashboardProps {
+  pokemonData: PokemonResult[];
+}
+
+export const Dashboard: FunctionComponent<DashboardProps> = ({
+  pokemonData,
+}) => {
+  const { setPokemonData, loadMoreUrl, setLoadMoreUrl } =
     usePokemonContext(PokemonContext);
 
   return (

@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactNode, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { styled, Stack } from "@mui/system";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { createGetRequest } from "@/methods";
@@ -8,10 +8,14 @@ import { typeColors } from "@/utils/typecolors";
 import { StatTable } from "./components";
 import { ErrorPage } from "../Error";
 import { PokemonInfo as PokemonData } from "@/types";
+import { NotificationContext, useNotificationContext } from "@/context";
 
 export const PokemonInfo: FunctionComponent = () => {
   const { pokemonname } = useParams();
   const { state }: { state: PokemonData } = useLocation();
+
+  const { openNotification, notificationContent } =
+    useNotificationContext(NotificationContext);
 
   const [pokemonData, setPokemonData] =
     useState<PokemonData>(defaultPokemonInfo);
@@ -34,6 +38,8 @@ export const PokemonInfo: FunctionComponent = () => {
           setIsLoading(false);
         },
         onError: () => {
+          notificationContent("Oops! An error ocurred.");
+          openNotification();
           setIsError(true);
         },
       });

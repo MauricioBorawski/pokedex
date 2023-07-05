@@ -5,8 +5,11 @@ import { AppBar, Box, InputBase, Typography } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 import { DisplayOptions } from "./components/DisplayOptions";
 import { useDebounce } from "@/hooks";
+import { PokemonResult } from "@/types";
 
-export const Navbar: FunctionComponent = () => {
+export const Navbar: FunctionComponent<{ pokemonData: PokemonResult[] }> = ({
+  pokemonData,
+}) => {
   const navigate = useNavigate();
 
   const [openOptions, setOpenOptions] = useState<boolean>(false);
@@ -67,6 +70,7 @@ export const Navbar: FunctionComponent = () => {
               }}
             />
             <DisplayOptions
+              pokemonData={pokemonData}
               show={openOptions}
               setShow={(value: boolean) => {
                 setOpenOptions(value);

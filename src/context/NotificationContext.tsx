@@ -9,6 +9,8 @@ import {
 
 interface NotificationReturnType {
   open: boolean;
+  content: ReactNode;
+  notificationContent: (newContent: ReactNode) => void;
   openNotification: () => void;
   closeNotification: () => void;
   onCloseNotification: (callback: () => void) => void;
@@ -16,6 +18,8 @@ interface NotificationReturnType {
 
 export const NotificationContext = createContext<NotificationReturnType>({
   open: false,
+  content: undefined,
+  notificationContent: (newContent: ReactNode) => {},
   openNotification: () => {},
   closeNotification: () => {},
   onCloseNotification: () => {},
@@ -27,15 +31,22 @@ export const NotificationContextProvider = ({
   children: ReactNode;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [content, setContent] = useState<ReactNode>(undefined);
 
   const closeNotification = () => {
     setOpen(false);
+  };
+
+  const notificationContent = (newContent: ReactNode) => {
+    setContent(newContent);
   };
 
   return (
     <NotificationContext.Provider
       value={{
         open,
+        content,
+        notificationContent,
         openNotification: () => {
           setOpen(true);
         },
@@ -53,7 +64,21 @@ export const NotificationContextProvider = ({
 export const useNotificationContext = (
   context: Context<NotificationReturnType>
 ) => {
-  const { openNotification, onCloseNotification } = useContext(context);
+  const {
+    open,
+    content,
+    notificationContent,
+    openNotification,
+    onCloseNotification,
+    closeNotification,
+  } = useContext(context);
 
-  return { openNotification, onCloseNotification };
+  return {
+    open,
+    content,
+    notificationContent,
+    openNotification,
+    onCloseNotification,
+    closeNotification,
+  };
 };
